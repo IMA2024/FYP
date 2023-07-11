@@ -17,7 +17,7 @@ app.use("/business", businessRouter);
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB")
 }).then(() => {
-    app.listen(3000, () => {
+    app.listen(process.env.PORT, () => {
         console.log("Server is running.")
     })
 })
