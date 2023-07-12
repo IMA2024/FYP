@@ -2,7 +2,10 @@ const businessOwnerModel = require("../models/businessOwner");
 const bcrypt = require("bcrypt");
 const { json } = require("express");
 const jwt = require("jsonwebtoken");
+const crypto = require('crypto');
 require("dotenv").config();
+
+
 
 const signup = async (req,res) =>{
 
@@ -39,7 +42,7 @@ const signup = async (req,res) =>{
             phoneNumber : phoneNumber,
         });
 
-        const token = jwt.sign({email : result.email, id : result_id}, process.env.SECRET_KEY);
+        const token = jwt.sign({email : result.email, id : result_id, role: "businessOwner"}, process.env.SECRET_KEY);
         res.status(201).json({Owner: result , token: token})
 
     } catch (error) {
@@ -74,7 +77,7 @@ const signin = async (req,res) =>{
             return res.status(400).json({message:"Invalid Password"});
         }
 
-        const token = jwt.sign({email: existingOwner.email, id : existingOwner._id}, process.env.SECRET_KEY);
+        const token = jwt.sign({email: existingOwner.email, id : existingOwner._id, role: "businessOwner"}, process.env.SECRET_KEY);
         res.status(201).json({Owner: existingOwner, token: token})
     }
         catch (error) {
@@ -82,6 +85,37 @@ const signin = async (req,res) =>{
             res.status(500).json({message:"Sonething went wrong."});
         }     
     }
+
+  const changePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const businessOwnerId = req.businessOwner.id;
+
+  try {
+    // Find the businessOwner in the database
+    const businessOwner = await businessOwnerModel.findById(businessOwnerId);
+
+    // Check if the current password matches
+    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, businessOwner.password);
+    if (!isCurrentPasswordValid) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    // Generate a hash for the new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the businessOwner's password
+    businessOwner.password = hashedNewPassword;
+    await businessOwner.save();
+
+    // Generate a new JWT token (optional)
+    const token = jwt.sign({ id: businessOwner.id, email: businessOwner.email }, process.env.SECRET_KEY);
+
+    res.json({ message: 'Password changed successfully', token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while changing the password' });
+  }
+};
 
     const viewAllOwners = async (req, res) => {
         try {
@@ -153,4 +187,4 @@ const signin = async (req,res) =>{
       };
 
 
-module.exports = {signup , signin, viewAllOwners, viewSpecificOwner, updateOwner, deleteOwner}
+module.exports = {signup , signin, changePassword, viewAllOwners, viewSpecificOwner, updateOwner, deleteOwner}

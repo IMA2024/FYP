@@ -1,14 +1,13 @@
 const express = require("express");
-const { signup, signin, viewAllMarkeingAgents, viewSpecificMarkeingAgent, updateMarkeingAgent, deleteMarkeingAgent } = require("../controllers/marketingAgentController");
+const { signup, signin, viewSpecificMarketingAgent, changePassword, updateMarketingAgent, deleteMarketingAgent } = require("../controllers/marketingAgentController");
 const marketingAgentRouter = express.Router();
+const {marketingAgentAuth} = require("../middleware/auth");
 
 marketingAgentRouter.post('/signup', signup);
 marketingAgentRouter.post('/signin', signin);
-marketingAgentRouter.get('/viewAllMarkeingAgents', viewAllMarkeingAgents);
-marketingAgentRouter.get('/viewSpecificMarkeingAgent/:id',viewSpecificMarkeingAgent);
-marketingAgentRouter.patch('/updateMarketingAgent/:id', updateMarkeingAgent);
-marketingAgentRouter.delete('/deleteMarkeingAgent/:id', deleteMarkeingAgent);
-
-
+marketingAgentRouter.get('/viewSpecificMarketingAgent/:id', marketingAgentAuth ,viewSpecificMarketingAgent);
+marketingAgentRouter.get('/changePassword/:id', marketingAgentAuth ,changePassword);
+marketingAgentRouter.patch('/updateMarketingAgent/:id', marketingAgentAuth, updateMarketingAgent);
+marketingAgentRouter.delete('/deleteMarketingAgent/:id', marketingAgentAuth ,deleteMarketingAgent);
 
 module.exports = marketingAgentRouter;  

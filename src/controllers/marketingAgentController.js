@@ -1,4 +1,4 @@
-const markeingAgentModel = require("../models/marketingAgent");
+const MarketingAgentModel = require("../models/marketingAgent");
 const bcrypt = require("bcrypt");
 const { json } = require("express");
 const jwt = require("jsonwebtoken");
@@ -6,11 +6,11 @@ require("dotenv").config();
 
 const signup = async (req,res) =>{
 
-    const { firstName, lastName, email, password, confirmPassword, phoneNumber } = req.body;
+    const { firstName, lastName, email, password, confirmPassword, phoneNumber, businesses} = req.body;
     
     try {
 
-        if (!firstName || !lastName || !email || !password || !confirmPassword || !phoneNumber) {
+        if (!firstName || !lastName || !email || !password || !confirmPassword || !phoneNumber || !businesses) {
             return res.status(400).json({ error: 'All fields are required' });
           }
         
@@ -20,9 +20,9 @@ const signup = async (req,res) =>{
         
     }
 
-        const existingMarkeingAgent = await markeingAgentModel.findOne({email : email});
-        if(existingMarkeingAgent){
-            return res.status(400).json({message:"Markeing Agent Already Exist"})
+        const existingMarketingAgent = await MarketingAgentModel.findOne({email : email});
+        if(existingMarketingAgent){
+            return res.status(400).json({message:"Marketing Agent Already Exist"})
         }
 
         if (password !== confirmPassword) {
@@ -31,16 +31,17 @@ const signup = async (req,res) =>{
 
         const hashPassword = await bcrypt.hash(password,10);
 
-        const result = await markeingAgentModel.create({
+        const result = await MarketingAgentModel.create({
             firstName : firstName,
             lastName: lastName,
             email : email,
             password: hashPassword,
             phoneNumber : phoneNumber,
+            businesses : businesses
         });
 
-        const token = jwt.sign({email : result.email, id : result_id}, process.env.SECRET_KEY);
-        res.status(201).json({MarkeingAgent: result , token: token})
+        const token = jwt.sign({email : result.email, id : result_id,  role: "marketingAgent"}, process.env.SECRET_KEY);
+        res.status(201).json({MarketingAgent: result , token: token})
 
     } catch (error) {
         console.log(error);
@@ -63,19 +64,19 @@ const signin = async (req,res) =>{
             return res.status(400).json({ error: 'Invalid email address' });
         
     }
-        const existingMarkeingAgent = await markeingAgentModel.findOne({email : email});
-        if(!existingMarkeingAgent){
-            return res.status(404).json({message:"Markeing Agent Not Found"})
+        const existingMarketingAgent = await MarketingAgentModel.findOne({email : email});
+        if(!existingMarketingAgent){
+            return res.status(404).json({message:"Marketing Agent Not Found"})
         }
 
-        const matchPassword = await bcrypt.compare(password,existingMarkeingAgent.password);
+        const matchPassword = await bcrypt.compare(password,existingMarketingAgent.password);
 
         if(!matchPassword){
             return res.status(400).json({message:"Invalid Password"});
         }
 
-        const token = jwt.sign({email: existingMarkeingAgent.email, id : existingMarkeingAgent._id}, process.env.SECRET_KEY);
-        res.status(201).json({MarkeingAgent: existingMarkeingAgent, token: token})
+        const token = jwt.sign({email: existingMarketingAgent.email, id : existingMarketingAgent._id, role: "marketingAgent"}, process.env.SECRET_KEY);
+        res.status(201).json({MarketingAgent: existingMarketingAgent, token: token})
     }
         catch (error) {
             console.log(error);
@@ -83,74 +84,95 @@ const signin = async (req,res) =>{
         }     
     }
 
-    const viewAllMarkeingAgents = async (req, res) => {
+    const viewSpecificMarketingAgent = async (req, res) => {
+      const MarketingAgentId = req.params.id;
+    
+      try {
+        const MarketingAgent = await MarketingAgentModel.findById(MarketingAgentId);
+        if (!MarketingAgent) {
+          return res.status(404).json({ message: 'Marketing Agent not found' });
+        }
+    
+        res.status(200).json({ MarketingAgent });
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Something went wrong.' });
+      }
+    };
+
+    const changePassword = async (req, res) => {
+      const { currentPassword, newPassword } = req.body;
+      const businessOwnerId = req.businessOwner.id;
+    
+      try {
+        // Find the businessOwner in the database
+        const businessOwner = await businessOwnerModel.findById(businessOwnerId);
+    
+        // Check if the current password matches
+        const isCurrentPasswordValid = await bcrypt.compare(currentPassword, businessOwner.password);
+        if (!isCurrentPasswordValid) {
+          return res.status(401).json({ error: 'Current password is incorrect' });
+        }
+    
+        // Generate a hash for the new password
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    
+        // Update the businessOwner's password
+        businessOwner.password = hashedNewPassword;
+        await businessOwner.save();
+    
+        // Generate a new JWT token (optional)
+        const token = jwt.sign({ id: businessOwner.id, email: businessOwner.email }, process.env.SECRET_KEY);
+    
+        res.json({ message: 'Password changed successfully', token });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while changing the password' });
+      }
+    };
+
+    const updateMarketingAgent = async (req, res) => {
+      const { firstName, lastName, phoneNumber } = req.body;
+      const MarketingAgentId = req.params.id; 
+      // Assuming you have middleware that extracts the MarketingAgent ID from the JWT token
+      
+      try {
+        if (!firstName || !lastName || !phoneNumber) {
+          return res.status(400).json({ error: 'All fields are required' });
+        }
+    
+        const updatedMarketingAgent = await MarketingAgentModel.findByIdAndUpdate(
+          MarketingAgentId,
+          { firstName, lastName, phoneNumber },
+          { new: true }
+        );
+    
+        if (!updatedMarketingAgent) {
+          return res.status(404).json({ message: 'Marketing Agent not found' });
+        }
+    
+        res.status(200).json({ MarketingAgent: updatedMarketingAgent });
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Something went wrong.' });
+      }
+    };
+
+      const deleteMarketingAgent = async (req, res) => {
+        const MarketingAgentId = req.params.id;
+      
         try {
-          const MarkeingAgents = await markeingAgentModel.find();
-          res.status(200).json({ MarkeingAgents });
+          const deletedMarketingAgent = await MarketingAgentModel.findByIdAndDelete(MarketingAgentId);
+          if (!deletedMarketingAgent) {
+            return res.status(404).json({ message: 'Marketing Agent not found' });
+          }
+      
+          res.status(200).json({ message: 'Marketing Agent Deleted Successfully' });
         } catch (error) {
           console.log(error);
           res.status(500).json({ message: 'Something went wrong.' });
         }
       };
 
-      const viewSpecificMarkeingAgent = async (req, res) => {
-        const MarkeingAgentId = req.params.id;
-      
-        try {
-          const MarkeingAgent = await markeingAgentModel.findById(MarkeingAgentId);
-          if (!MarkeingAgent) {
-            return res.status(404).json({ message: 'Markeing Agent not found' });
-          }
-      
-          res.status(200).json({ MarkeingAgent });
-        } catch (error) {
-          console.log(error);
-          res.status(500).json({ message: 'Something went wrong.' });
-        }
-      };
 
-    const updateMarkeingAgent= async (req, res) => {
-        const { firstName, lastName, phoneNumber } = req.body;
-        const MarkeingAgentId = req.params.id; 
-        // Assuming you have middleware that extracts the MarkeingAgent ID from the JWT token
-        
-        try {
-          if (!firstName || !lastName || !phoneNumber) {
-            return res.status(400).json({ error: 'All fields are required' });
-          }
-      
-          const updatedMarkeingAgent = await markeingAgentModel.findByIdAndUpdate(
-            MarkeingAgentId,
-            { firstName, lastName, phoneNumber },
-            { new: true }
-          );
-      
-          if (!updatedMarkeingAgent) {
-            return res.status(404).json({ message: 'Markeing Agent not found' });
-          }
-      
-          res.status(200).json({ MarkeingAgent: updatedMarkeingAgent });
-        } catch (error) {
-          console.log(error);
-          res.status(500).json({ message: 'Something went wrong.' });
-        }
-      };
-
-      const deleteMarkeingAgent = async (req, res) => {
-        const MarkeingAgentId = req.params.id;
-      
-        try {
-          const deletedMarkeingAgent = await markeingAgentModel.findByIdAndDelete(MarkeingAgentId);
-          if (!deletedMarkeingAgent) {
-            return res.status(404).json({ message: 'Markeing Agent not found' });
-          }
-      
-          res.status(200).json({ message: 'Markeing Agent Deleted Successfully' });
-        } catch (error) {
-          console.log(error);
-          res.status(500).json({ message: 'Something went wrong.' });
-        }
-      };
-
-
-module.exports = {signup , signin, viewAllMarkeingAgents, viewSpecificMarkeingAgent, updateMarkeingAgent, deleteMarkeingAgent}
+module.exports = { signup , signin, viewSpecificMarketingAgent, changePassword , updateMarketingAgent, deleteMarketingAgent}

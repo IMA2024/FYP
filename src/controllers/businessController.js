@@ -5,11 +5,11 @@ require("dotenv").config();
 
 const addBusiness = async (req,res) =>{
 
-    const { name, description, email, phoneNumber, address, city, country } = req.body;
+    const { name, description, email, phoneNumber, address, city, country, owner } = req.body;
     
     try {
 
-        if (!name || !description || !email || !phoneNumber || !address || !city|| !country) {
+        if (!name || !description || !email || !phoneNumber || !address || !city|| !country || !owner) {
             return res.status(400).json({ error: 'All fields are required' });
           }
         
@@ -30,7 +30,8 @@ const addBusiness = async (req,res) =>{
             phoneNumber: phoneNumber,
             address : address,
             city: city,
-            country : country
+            country : country,
+            owner: owner
         });
 
         const token = jwt.sign({email : result.email, id : result_id},process.env.SECRET_KEY);
@@ -40,23 +41,17 @@ const addBusiness = async (req,res) =>{
         console.log(error);
         res.status(500).json({message:"Something went wrong."});
     }
-}
-
-const viewBusiness = async (req, res) => {
-    const businessId = req.params.id;
-  
-    try {
-      const business = await businessModel.findById(businessId);
-      if (!business) {
-        return res.status(404).json({ message: 'Business not found' });
-      }
-  
-      res.status(200).json({ business });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Something went wrong.' });
-    }
   };
+
+const viewAllBusinesses = async (req, res) => {
+  try {
+    const Businesses = await businessModel.find();
+    res.status(200).json({ Businesses });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
 
 const updateBusiness = async (req, res) => {
     const { name, description, phoneNumber, address, city, country } = req.body;
@@ -127,4 +122,4 @@ const updateBusiness = async (req, res) => {
     }
   };
   
-module.exports = {addBusiness, viewBusiness, viewSpecificBusiness , updateBusiness, deleteBusiness};
+module.exports = {addBusiness, viewAllBusinesses  , viewSpecificBusiness , updateBusiness, deleteBusiness};
