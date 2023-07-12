@@ -27,7 +27,11 @@ app.use("/expense", expenseRouter);
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB")
 }).then(() => {
+<<<<<<< HEAD
     app.listen(5000, () => {
+=======
+    app.listen(process.env.PORT || 8080, () => {
+>>>>>>> 835925809298f6f994cafc046df39def522f3f45
         console.log("Server is running.")
     })
 })
