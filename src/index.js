@@ -1,28 +1,31 @@
 const express = require("express");
 const app = express();
+var cors = require('cors')
+const { signup, signin } = require("./controllers/profiling");
+const userRouter = require("./routes/adminRoute");
 const adminRouter = require("./routes/adminRoute");
-const marketingAgentRouter = require("./routes/marketingAgentRoute");
-const businessOwnerRouter = require("./routes/businessOwnerRoute");
-const businessRouter = require("./routes/businessRoute");
-const subscriptionRouter = require("./routes/subscriptionRoute");
-const businessQuestionnaireRouter = require("./routes/businessQuestionnaire");
-const revenueRouter = require("./routes/revenueRoute");
-const expenseRouter = require("./routes/expenseRoute");
+
 
 require('dotenv').config()
 
 const mongoose = require("mongoose");
 
-
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+  });
+  
+app.use(cors());
 app.use(express.json());
-app.use("/admin", adminRouter);
-app.use("/marketingAgent", marketingAgentRouter);
-app.use("/businessOwner", businessOwnerRouter);
-app.use("/business", businessRouter);
-app.use("/subscription", subscriptionRouter);
-app.use("/businessQuestionnaire", businessQuestionnaireRouter);
-app.use("/revenue", revenueRouter);
-app.use("/expense", expenseRouter);
+
+app.use("/signup",signup);
+app.use("/signin",signin);
+
+app.use("/user",userRouter);
+app.use("/admin",adminRouter);
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB")
@@ -34,4 +37,5 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
     .catch((error) => {
         console.log(error);
     })
+    
 

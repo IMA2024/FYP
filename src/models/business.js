@@ -1,20 +1,20 @@
 const mongoose = require("mongoose");
 
 const businessSchema = mongoose.Schema({
-
-  name: {
+  photo:{
+    type: String
+  },
+  type: {
     type: String,
     required: true,
   },
-  description: {
+  name: {
     type: String,
     required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true,
-    immutable: true,
   },
   phoneNumber: {
     type: String,
@@ -24,20 +24,14 @@ const businessSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  city: {
+  description:{
     type: String,
     required: true,
-  },
-  country: {
+   }, 
+   status:{
     type: String,
-    required: true,
-  },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'businessOwner',
-    required: true,
-    immutable: true
-  }
+    default: 'Active'
+   }
 }, { timestamps: true });
 
 module.exports = mongoose.model("business", businessSchema);
