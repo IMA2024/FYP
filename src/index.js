@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 var cors = require('cors')
 const { signup, signin } = require("./controllers/profiling");
-const userRouter = require("./routes/adminRoute");
 const adminRouter = require("./routes/adminRoute");
 
 
@@ -23,8 +22,6 @@ app.use(express.json());
 
 app.use("/signup",signup);
 app.use("/signin",signin);
-
-app.use("/user",userRouter);
 app.use("/admin",adminRouter);
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {

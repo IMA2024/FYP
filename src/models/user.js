@@ -23,11 +23,11 @@ const userSchema = mongoose.Schema({
     unique: true,
     immutable: true,
   },
-  password: {
+  phoneNumber:{
     type: String,
     required: true,
   },
-  phoneNumber:{
+  password: {
     type: String,
     required: true,
   },
