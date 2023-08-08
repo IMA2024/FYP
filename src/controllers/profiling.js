@@ -8,30 +8,22 @@ require("dotenv").config();
 // Sign Up
 
 const signup = async (req, res) => {
-  const { role, firstName, lastName, email, password, phoneNumber } = req.body;
+  const { role, firstName, lastName, email, phoneNumber, password } = req.body;
 
   try {
     let existingUser = await userModel.findOne({ email });
 
     if (existingUser) {
-      return res.status(400).json({ message: `${role} Already Exists with this Email` });
+      return res.status(400).json({ message: `User Already Exists with this Email` });
     }
 
-    const user = await userModel.create({ role, firstName, lastName, email, password, phoneNumber });
+    const user = await userModel.create({ role, firstName, lastName, email, phoneNumber, password });
 
-    res.status(201).json({
-      _id: user._id,
-      role: user.role,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      status:user.status,
-      token: generateToken(user._id)
-    });
+    return res.status(201).json({ user:user, message: `${role} Sign Up Successfully`});
+
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: 'Server Error' });
   }
 };
 
@@ -54,7 +46,6 @@ const signin = async (req, res) => {
         phoneNumber: existingUser.phoneNumber,
         status:existingUser.status,
         token: generateToken(existingUser),
-        success: true
       });
     } else {
       return res.status(401).json({ message: 'Invalid Credentials' });

@@ -8,28 +8,18 @@ const {generateToken} = require('../../utils/tokenMiddleware');
 
     const addUser = async (req,res) =>{
 
-        const { photo, role, firstName, lastName, email, password, phoneNumber, address} = req.body;
+        const {role, firstName, lastName, email, phoneNumber, address, password} = req.body;
       
         try {
           let existingUser = await userModel.findOne({ email });
       
           if (existingUser) {
-            return res.status(400).json({ message: `${role} Already Exists with this Email` });
+            return res.status(400).json({ message: `User Already Exists with this Email` });
           }
       
-          const user = await userModel.create({ photo, role, firstName, lastName, email, password, phoneNumber, address });
+          const user = await userModel.create({ role, firstName, lastName, email, phoneNumber, address, password });
       
-          res.status(201).json({
-            _id: user._id,
-            photo:user.photo,
-            role: user.role,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            address: user.address,
-            status:user.status,
-            token: generateToken(user._id)
+          res.status(201).json({ user : user , message: `${role} Added Successfully`
           });
         } catch (error) {
           console.log(error);
@@ -42,7 +32,7 @@ const {generateToken} = require('../../utils/tokenMiddleware');
     const viewAllUsers = async (req, res) => {
         try {
           const users = await userModel.find();
-          return res.status(200).json( users );
+          return res.status(200).json( {users : users} );
         } catch (error) {
           console.log(error);
           return res.status(500).json({ message: 'Something went wrong.' });
