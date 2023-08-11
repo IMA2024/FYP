@@ -8,7 +8,7 @@ const {generateToken} = require('../../utils/tokenMiddleware');
 
     const addUser = async (req,res) =>{
 
-        const {role, firstName, lastName, email, phoneNumber, address, password} = req.body;
+        const {profilePic, role, firstName, lastName, email, phoneNumber, address, password} = req.body;
       
         try {
           let existingUser = await userModel.findOne({ email });
@@ -17,13 +17,12 @@ const {generateToken} = require('../../utils/tokenMiddleware');
             return res.status(400).json({ message: `User Already Exists with this Email` });
           }
       
-          const user = await userModel.create({ role, firstName, lastName, email, phoneNumber, address, password });
+          const user = await userModel.create({ profilePic, role, firstName, lastName, email, phoneNumber, address, password });
       
-          res.status(201).json({ user : user , message: `${role} Added Successfully`
+          return res.status(201).json({ user : user , message: `${role} Added Successfully`
           });
         } catch (error) {
-          console.log(error);
-          res.status(500).json({ message: 'Something went wrong.' });
+          return res.status(500).json({ message: 'Something went wrong.' });
         }
       };
 
@@ -42,12 +41,12 @@ const {generateToken} = require('../../utils/tokenMiddleware');
       // Update Profile
       
           const updateUser = async (req, res) => {
-          const { userId, photo, role ,firstName, lastName, password, phoneNumber, address } = req.body;
+          const { userId, role,  firstName, lastName, phoneNumber, address } = req.body;
           
           try {
             
             const updatedUser = await userModel.findByIdAndUpdate(userId,
-              { photo, firstName, lastName, password, phoneNumber, address },
+              { firstName, lastName, phoneNumber, address },
               { new: true }
             );
         
