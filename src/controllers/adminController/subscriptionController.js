@@ -34,7 +34,7 @@ const addNewSubscription = async (req, res) => {
 const viewSubscriptions = async (req, res) => {
     try {
         const subscriptions = await subscriptionModel.find();
-        res.status(200).json(subscriptions);
+        res.status(200).json({subscriptions : subscriptions});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -43,33 +43,30 @@ const viewSubscriptions = async (req, res) => {
 // Update Subscription
 
 const updateSubscription = async (req, res) => {
-    const { subscriptionId, type, title, description, price, limit } = req.body;
-  
-    try {
-      // Check if the subscription to be updated exists
-      const existingSubscription = await subscriptionModel.findById(subscriptionId);
-      if (!existingSubscription) {
-        return res.status(404).json({ message: 'Subscription not found' });
-      }
-  
-      // Check if a subscription with the same type already exists (excluding the current subscription)
-      const duplicateSubscription = await subscriptionModel.findOne({ type, _id: { $ne: subscriptionId } });
-      if (duplicateSubscription) {
-        return res.status(409).json({ message: 'Duplicate subscription not allowed' });
-      }
-  
-      // Perform the update
-      const updatedSubscription = await subscriptionModel.findByIdAndUpdate(
-        subscriptionId,
-        { type, title, description, price, limit },
-        { new: true }
-      );
-  
-      res.status(200).json({ subscription: updatedSubscription });
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+  const { title, price, limit, description } = req.body;
+
+  try {
+    // Find the subscription to be updated by title
+    const existingSubscription = await subscriptionModel.findOne({ title });
+    if (!existingSubscription) {
+      return res.status(404).json({ message: 'Subscription not found' });
     }
-  };
+
+    // Update the subscription properties
+    existingSubscription.title = title;
+    existingSubscription.price = price;
+    existingSubscription.limit = limit;
+    existingSubscription.description = description;
+
+    // Save the updated subscription
+    const updatedSubscription = await existingSubscription.save();
+
+    res.status(200).json({ subscription: updatedSubscription });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 
 
 // Delete Subscription
