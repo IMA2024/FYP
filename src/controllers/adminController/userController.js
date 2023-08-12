@@ -41,12 +41,12 @@ const {generateToken} = require('../../utils/tokenMiddleware');
       // Update Profile
       
           const updateUser = async (req, res) => {
-          const { userId, role,  firstName, lastName, phoneNumber, address } = req.body;
+          const { userId, profilePic, role,  firstName, lastName, phoneNumber, address } = req.body;
           
           try {
             
             const updatedUser = await userModel.findByIdAndUpdate(userId,
-              { firstName, lastName, phoneNumber, address },
+              { profilePic, firstName, lastName, phoneNumber, address  },
               { new: true }
             );
         
@@ -54,7 +54,7 @@ const {generateToken} = require('../../utils/tokenMiddleware');
               return res.status(404).json({ message: `${role} Not Found` });
             }
         
-            return res.status(200).json({ user: updatedUser });
+            return res.status(200).json({ message: `${role} Updated Successfully` });
           } catch (error) {
             console.log(error);
             return res.status(500).json({ message: 'Something went wrong.' });
