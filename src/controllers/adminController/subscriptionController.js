@@ -67,8 +67,6 @@ const updateSubscription = async (req, res) => {
   }
 };
 
-
-
 // Delete Subscription
 
 const deleteSubscription = async (req, res) => {

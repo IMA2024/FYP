@@ -4,7 +4,7 @@ const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness } = requi
 const { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription } = require("../controllers/adminController/subscriptionController");
 const { adminAuth } = require("../middleware/auth");
 const { addRevenue, viewAllRevenues, deleteRevenue, addExpense, viewAllExpenses, deleteExpense } = require("../controllers/adminController/accountingController");
-const { signup, signin } = require("../controllers/profiling");
+const { businessOwnersList } = require("../controllers/adminController/businessOwnersList");
 const adminRouter = express.Router();
 
 // For Users
@@ -13,6 +13,9 @@ adminRouter.post('/addUser', addUser);
 adminRouter.get('/viewAllUsers',viewAllUsers);
 adminRouter.put('/updateUser',updateUser);
 adminRouter.delete('/deleteUser' ,deleteUser);
+
+// For Business Owners List
+adminRouter.get('/businessOwnersList',businessOwnersList);
 
 // For Business
 
@@ -39,6 +42,7 @@ adminRouter.delete('/deleteRevenue', deleteRevenue);
 adminRouter.post('/addExpense', addExpense);
 adminRouter.get('/viewAllExpenses', viewAllExpenses);
 adminRouter.delete('/deleteExpense', deleteExpense);
+
 
 
 module.exports = adminRouter;

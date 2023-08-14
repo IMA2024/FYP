@@ -34,10 +34,6 @@ const userSchema = mongoose.Schema({
   address: {
     type: String,
   },
-  businesses: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: 'business'
-  },
   status: {
     type: String,
     default: 'Active'  

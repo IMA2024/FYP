@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const businessSchema = mongoose.Schema({
-  photo:{
+  profilePic:{
     type: String
   },
   type: {
@@ -12,6 +12,11 @@ const businessSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  businessOwner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Business Owner',
+    required: true
+    },
   email: {
     type: String,
     required: true,
