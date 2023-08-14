@@ -5,24 +5,28 @@ require("dotenv").config();
 
 const addBusiness = async (req, res) => {
 
-  const { photo, type, name, email, address, phoneNumber, description, owner } = req.body;
+  const { profilePic, type, name, businessOwner, email, address, phoneNumber, description } = req.body;
 
   try {
-    const existingUser = await businessModel.findOne({ email: email });
-    if (existingUser) {
+    const existingBusiness = await businessModel.findOne({ email: email });
+    if (existingBusiness) {
       return res.status(400).json({ message: "Business Already Exist" })
     }
 
     const result = await businessModel.create({
-      photo: photo,
+      profilePic: profilePic,
       type: type,
       name: name,
+      businessOwner: businessOwner,
       email: email,
       address: address,
       phoneNumber: phoneNumber,
       description: description,
-      owner: owner
-    });
+    })
+    if (result) {
+      res.status(201).json({ message: "Business Added Successfully" });
+    } 
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong." });
@@ -31,8 +35,8 @@ const addBusiness = async (req, res) => {
 
 const viewAllBusinesses = async (req, res) => {
   try {
-    const Businesses = await businessModel.find();
-    res.status(200).json(Businesses);
+    const businesses = await businessModel.find();
+    res.status(200).json({ businesses: businesses });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Something went wrong.' });
@@ -40,12 +44,12 @@ const viewAllBusinesses = async (req, res) => {
 };
 
 const updateBusiness = async (req, res) => {
-  const { businessId, photo ,type, name, address , phoneNumber, description, owner } = req.body;
+  const { businessId, profilePic, type, name, businessOwner, address, phoneNumber, description } = req.body;
 
   try {
-            
+
     const updatedBusiness = await businessModel.findByIdAndUpdate(businessId,
-      { photo, type, name, phoneNumber, description , address, owner  },
+      { profilePic, type, name, businessOwner, phoneNumber, description, address },
       { new: true }
     );
 
@@ -57,21 +61,21 @@ const updateBusiness = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
-  }};
+  }
+};
 
 const deleteBusiness = async (req, res) => {
-    const {businessId} = req.query;
+  const { businessId } = req.query;
 
   try {
     const deletedBusiness = await businessModel.findByIdAndDelete(businessId);
     if (!deletedBusiness) {
       return res.status(404).json({ message: 'Business not found' });
     }
-
-    res.status(200).json({ message: 'Business deleted successfully' });
+    return res.status(200).json({ message: 'Business deleted successfully' });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
