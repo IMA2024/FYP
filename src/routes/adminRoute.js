@@ -1,9 +1,9 @@
 const express = require("express");
 const { addUser, viewAllUsers, deleteUser, updateUser} = require("../controllers/adminController/userController");
-const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness } = require("../controllers/adminController/businessController");
+const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness, businessesList } = require("../controllers/adminController/businessController");
 const { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription } = require("../controllers/adminController/subscriptionController");
 const { adminAuth } = require("../middleware/auth");
-const { addRevenue, viewAllRevenues, deleteRevenue, addExpense, viewAllExpenses, deleteExpense } = require("../controllers/adminController/accountingController");
+const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense } = require("../controllers/adminController/accountingController");
 const { businessOwnersList } = require("../controllers/adminController/businessOwnersList");
 const adminRouter = express.Router();
 
@@ -23,6 +23,8 @@ adminRouter.post('/addBusiness',addBusiness);
 adminRouter.get('/viewAllBusinesses',viewAllBusinesses);
 adminRouter.put('/updateBusiness', updateBusiness);
 adminRouter.delete('/deleteBusiness', deleteBusiness);
+
+adminRouter.get('/businessesList',businessesList);
 
 // For Subscription
 

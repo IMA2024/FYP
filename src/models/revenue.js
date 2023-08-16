@@ -2,13 +2,17 @@ const mongoose = require("mongoose");
 
 const revenueSchema = mongoose.Schema({
 
-    business: {
-        type: String,
-        required: true,
-    },
     title: {
         type: String,
         required: true,
+    },
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Business',
+        required: true
+    },
+    description: {
+        type: String,
     },
     date: {
         type: Date,
@@ -17,9 +21,6 @@ const revenueSchema = mongoose.Schema({
     amount: {
         type: Number,
         required: true,
-    },
-    description: {
-        type: String,
     }
 },
     { timestamps: true });
