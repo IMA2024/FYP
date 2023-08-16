@@ -36,10 +36,12 @@ const addBusiness = async (req, res) => {
 const viewAllBusinesses = async (req, res) => {
   try {
     const businesses = await businessModel.find();
-    res.status(200).json({ businesses: businesses });
-  } catch (error) {
+    return res.status(200).json({ businesses: businesses });
+  } 
+  
+  catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -79,4 +81,14 @@ const deleteBusiness = async (req, res) => {
   }
 };
 
-module.exports = { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness };
+const businessesList = async (req, res) => {
+  try {
+    const businesses = await businessModel.find();
+    return res.status(200).json(businesses);
+  }
+  catch (err) {
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+  };
+
+module.exports = { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness, businessesList };

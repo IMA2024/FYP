@@ -1,4 +1,3 @@
-const businessModel = require("../../models/business");
 const revenueModel = require("../../models/revenue");
 const expenseModel = require("../../models/expense");
 const { json } = require("express");
@@ -9,18 +8,13 @@ require("dotenv").config();
         // Adding Revenue 
 
         const addRevenue = async (req, res) => {
-            const { email, business, title, date, amount, description } = req.body;
+            const { title, business, description,  date, amount } = req.body;
           
             try {
-              const existingBusiness = await businessModel.findOne({ email });
-          
-              if (existingBusiness) {
-                const newRevenue = await revenueModel.create({ business, title, date, amount, description });
-          
+
+                const newRevenue = await revenueModel.create({  title, business, description,  date, amount });
                 res.status(201).json({ revenue: newRevenue });
-              } else {
-                res.status(400).json({ message: "Business not found in records. Please add the business first." });
-              }
+
             } catch (err) {
               res.status(500).json({ message: err.message });
             }
@@ -31,8 +25,8 @@ require("dotenv").config();
     
         const viewAllRevenues = async (req, res) => {
             try {
-              const allRevenues = await revenueModel.find();
-              res.status(200).json(allRevenues);
+              const revenues = await revenueModel.find();
+              res.status(200).json({ revenues : revenues });
             } catch (err) {
               res.status(500).json({ message: err.message });
             }
@@ -52,9 +46,9 @@ require("dotenv").config();
                 return res.status(404).json({ error: 'Revenue not found.' });
               }
           
-              res.status(200).json({ message: 'Revenue deleted successfully.' });
+              return res.status(200).json({ message: 'Revenue Deleted Successfully.' });
             } catch (err) {
-              res.status(500).json({ message: err.message });
+              return res.status(500).json({ message: err.message });
             }
           };
           
@@ -64,18 +58,13 @@ require("dotenv").config();
 // Adding Expense 
 
 const addExpense = async (req, res) => {
-    const { email, business, title, date, amount, description } = req.body;
+    const {  title, business, description,  date, amount  } = req.body;
   
     try {
-      const existingBusiness = await businessModel.findOne({ email });
-  
-      if (existingBusiness) {
-        const newExpense = await expenseModel.create({ business, title, date, amount, description });
+        const newExpense = await expenseModel.create({  title, business, description,  date, amount  });
   
         res.status(201).json({ expense: newExpense });
-      } else {
-        res.status(400).json({ message: "Business not found in records. Please add the business first." });
-      }
+
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -86,10 +75,10 @@ const addExpense = async (req, res) => {
 
 const viewAllExpenses = async (req, res) => {
     try {
-        const allExpenses = await expenseModel.find();
-        res.status(200).json(allExpenses);
+        const expenses = await expenseModel.find();
+        return res.status(200).json({expenses : expenses});
     } catch (err) {
-        res.status(500).json({ message: err.message });
+      return res.status(500).json({ message: err.message });
     }
 };
 
@@ -105,10 +94,10 @@ const deleteExpense = async (req, res) => {
             return res.status(404).json({ error: 'Expense not found.' });
         }
 
-        res.status(200).json({ message: 'Expense deleted successfully.' });
+        return  res.status(200).json({ message: 'Expense Deleted Successfully.' });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+      return res.status(500).json({ message: err.message });
     }
 };
 
-module.exports = { addRevenue, viewAllRevenues, deleteRevenue , addExpense, viewAllExpenses, deleteExpense}
+module.exports = { addRevenue, viewAllRevenues , deleteRevenue , addExpense, viewAllExpenses , deleteExpense}
