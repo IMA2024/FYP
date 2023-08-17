@@ -25,7 +25,7 @@ require("dotenv").config();
     
         const viewAllRevenues = async (req, res) => {
             try {
-              const revenues = await revenueModel.find();
+              const revenues = await revenueModel.find().populate('business');
               res.status(200).json({ revenues : revenues });
             } catch (err) {
               res.status(500).json({ message: err.message });
@@ -75,7 +75,7 @@ const addExpense = async (req, res) => {
 
 const viewAllExpenses = async (req, res) => {
     try {
-        const expenses = await expenseModel.find();
+        const expenses = await expenseModel.find().populate('business');
         return res.status(200).json({expenses : expenses});
     } catch (err) {
       return res.status(500).json({ message: err.message });

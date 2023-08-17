@@ -35,7 +35,7 @@ const addBusiness = async (req, res) => {
 
 const viewAllBusinesses = async (req, res) => {
   try {
-    const businesses = await businessModel.find();
+    const businesses = await businessModel.find().populate('businessOwner');
     return res.status(200).json({ businesses: businesses });
   } 
   
@@ -74,7 +74,7 @@ const deleteBusiness = async (req, res) => {
     if (!deletedBusiness) {
       return res.status(404).json({ message: 'Business not found' });
     }
-    return res.status(200).json({ message: 'Business deleted successfully' });
+    return res.status(200).json({ message: 'Business Deleted Successfully' });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
