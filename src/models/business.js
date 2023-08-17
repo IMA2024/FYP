@@ -14,7 +14,7 @@ const businessSchema = mongoose.Schema({
   },
   businessOwner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Business Owner',
+    ref: 'user',
     required: true
     },
   email: {
