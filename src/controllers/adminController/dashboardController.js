@@ -58,7 +58,7 @@ const totalRevenue = async (req, res) => {
       const allRevenues = await revenueModel.find();
   
       if (allRevenues.length === 0) {
-        return res.status(200).json({ totalRevenue: 0 });
+        return res.status(200).json({ totalRevenue : 0 });
       }
   
       const totalRevenue = allRevenues.reduce((accumulator, revenue) => {

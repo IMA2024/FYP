@@ -31,9 +31,6 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  address: {
-    type: String,
-  },
   status: {
     type: String,
     default: 'Active'  
