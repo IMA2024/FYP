@@ -1,7 +1,8 @@
 const userModel = require('../models/user');
+const jwt = require('jsonwebtoken');
 // const otpModel = require('../models/otp');
 const { json } = require("express");
-const {generateToken} = require("../utils/tokenMiddleware");
+const { generateToken } = require("../utils/tokenMiddleware");
 require("dotenv").config();
 
 
@@ -19,7 +20,7 @@ const signup = async (req, res) => {
 
     const user = await userModel.create({ role, firstName, lastName, email, phoneNumber, password });
 
-    return res.status(201).json({ user:user, message: `${role} Sign Up Successfully`});
+    return res.status(201).json({ user: user, message: `${role} Sign Up Successfully` });
 
   } catch (error) {
     console.log(error);
@@ -44,10 +45,11 @@ const signin = async (req, res) => {
         lastName: existingUser.lastName,
         email: existingUser.email,
         phoneNumber: existingUser.phoneNumber,
-        status:existingUser.status,
+        status: existingUser.status,
         token: generateToken(existingUser),
       });
-    } else {
+    } 
+    else {
       return res.status(401).json({ message: 'Invalid Credentials' });
     }
   } catch (error) {
@@ -55,6 +57,32 @@ const signin = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
+const myProfile = async (req, res) => {
+  const token = await req.headers['authorization']
+
+  if (!token) {
+    return res.status(401).json({ message: 'Token is not Provided' });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded) {
+      const { _id } = decoded;
+      const user = await userModel.findOne({ _id });
+      if (!user) {
+        return res.status(404).json({ message: 'User Not Found' });
+      }
+      return res.json(user);
+    } else {
+      return res.status(403).json({ message: 'User Not Verified' });
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+    return res.status(403).json({ message: 'Invalid Token' });
+  }
+};
+
+
 
 // Forget Password
 
@@ -160,4 +188,4 @@ const signin = async (req, res) => {
 // };
 
 
-module.exports = { signup, signin };
+module.exports = { signup, signin, myProfile };
