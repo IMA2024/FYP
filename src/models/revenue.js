@@ -21,7 +21,10 @@ const revenueSchema = mongoose.Schema({
     amount: {
         type: Number,
         required: true,
-    }
+    },  
+    profilePic:{
+        type: String
+      },
 },
     { timestamps: true });
 

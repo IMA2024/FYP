@@ -8,7 +8,7 @@ const {generateToken} = require('../../utils/tokenMiddleware');
 
     const addUser = async (req,res) =>{
 
-        const {profilePic, role, firstName, lastName, email, phoneNumber, address, password} = req.body;
+        const {profilePic, role, firstName, lastName, email, phoneNumber, password} = req.body;
       
         try {
           let existingUser = await userModel.findOne({ email });
@@ -17,7 +17,7 @@ const {generateToken} = require('../../utils/tokenMiddleware');
             return res.status(400).json({ message: `User Already Exists with this Email` });
           }
       
-          const user = await userModel.create({ profilePic, role, firstName, lastName, email, phoneNumber, address, password });
+          const user = await userModel.create({ profilePic, role, firstName, lastName, email, phoneNumber, password });
       
           return res.status(201).json({ user : user , message: `${role} Added Successfully`
           });
@@ -41,12 +41,12 @@ const {generateToken} = require('../../utils/tokenMiddleware');
       // Update Profile
       
           const updateUser = async (req, res) => {
-          const { userId, profilePic, role,  firstName, lastName, phoneNumber, address } = req.body;
+          const { userId, profilePic, role,  firstName, lastName, phoneNumber } = req.body;
           
           try {
             
             const updatedUser = await userModel.findByIdAndUpdate(userId,
-              { profilePic, firstName, lastName, phoneNumber, address  },
+              { profilePic, firstName, lastName, phoneNumber  },
               { new: true }
             );
         

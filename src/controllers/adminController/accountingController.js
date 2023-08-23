@@ -8,11 +8,11 @@ require("dotenv").config();
 // Adding Revenue 
 
 const addRevenue = async (req, res) => {
-  const { title, business, description, date, amount } = req.body;
+  const { title, business, description, date, amount, profilePic } = req.body;
 
   try {
 
-    const newRevenue = await revenueModel.create({ title, business, description, date, amount });
+    const newRevenue = await revenueModel.create({ title, business, description, date, amount, profilePic});
     return res.status(201).json({ revenue: newRevenue });
 
   } catch (err) {
@@ -58,10 +58,10 @@ const deleteRevenue = async (req, res) => {
 // Adding Expense 
 
 const addExpense = async (req, res) => {
-  const { title, business, description, date, amount } = req.body;
+  const { title, business, description, date, amount, profilePic } = req.body;
 
   try {
-    const newExpense = await expenseModel.create({ title, business, description, date, amount });
+    const newExpense = await expenseModel.create({ title, business, description, date, amount, profilePic});
 
     return res.status(201).json({ expense: newExpense });
 
