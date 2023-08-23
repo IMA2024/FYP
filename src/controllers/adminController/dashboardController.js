@@ -1,6 +1,7 @@
 const userModel = require("../../models/user");
 const revenueModel = require("../../models/revenue");
 const businessModel = require("../../models/business");
+const subscriptionModel = require("../../models/subscription");
 
 // TotalRevenueBlocks === Number of Users
 
@@ -31,8 +32,26 @@ const totalBusinessOwners = async (req, res) => {
     }
 };
 
+const totalCustomers = async (req, res) => {
+    try {
+        const totalCustomers = await userModel.countDocuments({ role: 'Customer' });
+        return res.status(200).json(totalCustomers);
+    } catch (err) {
+        return res.status(500).json({ message: 'Error getting total marketing agents', error: err.message });
+    }
+};
+
 // Grouped Stats === Businesses, Subscription , Payment , Revenue
 
+
+const totalSubscriptions = async (req, res) => {
+    try {
+        const totalSubscriptions = await subscriptionModel.countDocuments();
+        return res.status(200).json(totalSubscriptions);
+    } catch (err) {
+        return res.status(500).json({ message: 'Error getting total businesses', error: err.message });
+    }
+};
 
 const totalRevenue = async (req, res) => {
     try {
@@ -55,11 +74,11 @@ const totalRevenue = async (req, res) => {
 const totalBusinesses = async (req, res) => {
     try {
         const totalBusinesses = await businessModel.countDocuments();
-        return res.status(200).json({totalBusinesses});
+        return res.status(200).json(totalBusinesses);
     } catch (err) {
         return res.status(500).json({ message: 'Error getting total businesses', error: err.message });
     }
 };
 
 
-module.exports = { totalUsers , totalMarketingAgents , totalBusinessOwners , totalRevenue , totalBusinesses};
+module.exports = { totalUsers , totalMarketingAgents , totalBusinessOwners , totalCustomers , totalSubscriptions , totalRevenue , totalBusinesses};

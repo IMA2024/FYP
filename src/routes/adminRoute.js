@@ -5,14 +5,16 @@ const { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscri
 const { adminAuth } = require("../middleware/auth");
 const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense } = require("../controllers/adminController/accountingController");
 const { businessOwnersList } = require("../controllers/adminController/businessOwnersList");
-const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue } = require("../controllers/adminController/dashboardController");
+const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue, totalCustomers, totalSubscriptions } = require("../controllers/adminController/dashboardController");
 const adminRouter = express.Router();
 
 // For Dashboard
 adminRouter.get('/totalUsers', totalUsers);
 adminRouter.get('/totalMarketingAgents', totalMarketingAgents);
 adminRouter.get('/totalBusinessOwners', totalBusinessOwners);
+adminRouter.get('/totalCustomers', totalCustomers);
 
+adminRouter.get('/totalSubscriptions', totalSubscriptions);
 adminRouter.get('/totalRevenue', totalRevenue);
 adminRouter.get('/totalBusinesses', totalBusinesses);
 
