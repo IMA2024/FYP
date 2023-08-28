@@ -6,6 +6,7 @@ const { adminAuth } = require("../middleware/auth");
 const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense } = require("../controllers/adminController/accountingController");
 const { businessOwnersList } = require("../controllers/adminController/businessOwnersList");
 const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue, totalCustomers, totalSubscriptions } = require("../controllers/adminController/dashboardController");
+const { addFAQ, viewAllFAQs, updateFAQ, deleteFAQ } = require("../controllers/adminController/faqController");
 const adminRouter = express.Router();
 
 // For Dashboard
@@ -56,6 +57,13 @@ adminRouter.delete('/deleteRevenue', deleteRevenue);
 adminRouter.post('/addExpense', addExpense);
 adminRouter.get('/viewAllExpenses', viewAllExpenses);
 adminRouter.delete('/deleteExpense', deleteExpense);
+
+// For FAQs
+
+adminRouter.post('/addFAQ', addFAQ);
+adminRouter.get('/viewAllFAQs', viewAllFAQs);
+adminRouter.put('/updateFAQ', updateFAQ);
+adminRouter.delete('/deleteFAQ', deleteFAQ);
 
 
 
