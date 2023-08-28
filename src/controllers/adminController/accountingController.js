@@ -52,7 +52,6 @@ const deleteRevenue = async (req, res) => {
   }
 };
 
-
 // Expense
 
 // Adding Expense 
@@ -100,4 +99,67 @@ const deleteExpense = async (req, res) => {
   }
 };
 
-module.exports = { addRevenue, viewAllRevenues, deleteRevenue, addExpense, viewAllExpenses, deleteExpense }
+// Total Revenue
+
+const totalRevenue = async (req, res) => {
+  try {
+    const allRevenues = await revenueModel.find();
+
+    if (allRevenues.length === 0) {
+      return res.status(200).json({ totalRevenue : 0 });
+    }
+
+    const totalRevenue = allRevenues.reduce((accumulator, revenue) => {
+      return accumulator + revenue.amount;
+    }, 0);
+
+    return res.status(200).json(totalRevenue);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+// Total Expense
+
+const totalExpense = async (req, res) => {
+  try {
+    const allExpenses = await expenseModel.find();
+
+    if (allExpenses.length === 0) {
+      return res.status(200).json({ totalExpense: 0 });
+    }
+
+    const totalExpense = allExpenses.reduce((accumulator, expense) => {
+      return accumulator + expense.amount;
+    }, 0);
+
+    return res.status(200).json(totalExpense);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+//Total Profit 
+
+const totalProfit = async (req, res) => {
+  try {
+    const allRevenues = await revenueModel.find();
+    const allExpenses = await expenseModel.find();
+
+    const totalRevenue = allRevenues.reduce((accumulator, revenue) => {
+      return accumulator + revenue.amount;
+    }, 0);
+
+    const totalExpense = allExpenses.reduce((accumulator, expense) => {
+      return accumulator + expense.amount;
+    }, 0);
+
+    const profit = totalRevenue - totalExpense;
+
+    return res.status(200).json(profit);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { addRevenue, viewAllRevenues, deleteRevenue , addExpense, viewAllExpenses, deleteExpense , totalRevenue , totalExpense , totalProfit}

@@ -3,10 +3,12 @@ const mongoose = require("mongoose");
 const faqSchema = mongoose.Schema({
 
     question: {
-        type: String
+        type: String,
+        required: true,
     },
     answer: {
-        type: String
+        type: String,
+        required: true,
     },
 },
     { timestamps: true });

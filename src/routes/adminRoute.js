@@ -3,7 +3,7 @@ const { addUser, viewAllUsers, deleteUser, updateUser} = require("../controllers
 const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness, businessesList } = require("../controllers/adminController/businessController");
 const { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription } = require("../controllers/adminController/subscriptionController");
 const { adminAuth } = require("../middleware/auth");
-const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense } = require("../controllers/adminController/accountingController");
+const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense, totalExpense, totalProfit } = require("../controllers/adminController/accountingController");
 const { businessOwnersList } = require("../controllers/adminController/businessOwnersList");
 const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue, totalCustomers, totalSubscriptions } = require("../controllers/adminController/dashboardController");
 const { addFAQ, viewAllFAQs, updateFAQ, deleteFAQ } = require("../controllers/adminController/faqController");
@@ -16,7 +16,6 @@ adminRouter.get('/totalBusinessOwners', totalBusinessOwners);
 adminRouter.get('/totalCustomers', totalCustomers);
 
 adminRouter.get('/totalSubscriptions', totalSubscriptions);
-adminRouter.get('/totalRevenue', totalRevenue);
 adminRouter.get('/totalBusinesses', totalBusinesses);
 
 
@@ -46,6 +45,8 @@ adminRouter.get('/viewSubscriptions',viewSubscriptions);
 adminRouter.put('/updateSubscription', updateSubscription);
 adminRouter.delete('/deleteSubscription', deleteSubscription);
 
+// For Accounting
+
 // For Revenue
 
 adminRouter.post('/addRevenue', addRevenue);
@@ -57,6 +58,13 @@ adminRouter.delete('/deleteRevenue', deleteRevenue);
 adminRouter.post('/addExpense', addExpense);
 adminRouter.get('/viewAllExpenses', viewAllExpenses);
 adminRouter.delete('/deleteExpense', deleteExpense);
+
+// For Payments 
+
+adminRouter.get('/totalRevenue', totalRevenue);
+adminRouter.get('/totalExpense', totalExpense);
+adminRouter.get('/totalProfit', totalProfit);
+
 
 // For FAQs
 
