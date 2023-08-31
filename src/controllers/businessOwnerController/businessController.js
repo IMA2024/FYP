@@ -24,12 +24,12 @@ const addBusiness = async (req, res) => {
       description: description,
     })
     if (result) {
-      res.status(201).json({ message: "Business Added Successfully" });
+      return res.status(201).json({ message: "Business Added Successfully" });
     } 
 
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
