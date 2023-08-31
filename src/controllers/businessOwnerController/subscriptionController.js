@@ -34,8 +34,8 @@ const makePayment = async (req, res) => {
     payment_method_types:["card"],
     line_items: lineItems ,
     mode: "payment" ,
-    success_url: "http://localhost:5000/businessOwner/success",
-    cancel_url: "http://localhost:5000/businessOwner/cancel",
+    success_url: "http://127.0.0.1:5173/PaymentSucces",
+    cancel_url: "http://127.0.0.1:5173/PaymentUnsuccessful",
   });
 
   return res.json({id:session.id});
