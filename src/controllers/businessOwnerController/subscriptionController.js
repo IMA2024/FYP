@@ -16,7 +16,7 @@ const viewSubscriptions = async (req, res) => {
 
 const makePayment = async (req, res) => {
   const {subscribed} = req.body;
-  console.log(subscribed);
+  // console.log(subscribed);
     const lineItems = [
     {
       price_data: {
@@ -42,3 +42,4 @@ const makePayment = async (req, res) => {
 };
 
 module.exports = { viewSubscriptions , makePayment}
+
