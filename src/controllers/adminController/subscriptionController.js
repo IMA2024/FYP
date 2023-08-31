@@ -23,9 +23,9 @@ const addNewSubscription = async (req, res) => {
         type, title, description, price, limit,
       });
   
-      return res.status(201).json({subscription: newSubscription});
+      res.status(201).json({subscription: newSubscription});
     } catch (err) {
-      return res.status(400).json({ message: err.message });
+      res.status(400).json({ message: err.message });
     }
   };
 
@@ -34,9 +34,9 @@ const addNewSubscription = async (req, res) => {
 const viewSubscriptions = async (req, res) => {
     try {
         const subscriptions = await subscriptionModel.find();
-        return res.status(200).json({subscriptions : subscriptions});
+        res.status(200).json({subscriptions : subscriptions});
     } catch (err) {
-      return res.status(500).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 };
 
@@ -61,9 +61,9 @@ const updateSubscription = async (req, res) => {
     // Save the updated subscription
     const updatedSubscription = await existingSubscription.save();
 
-    return res.status(200).json({ subscription: updatedSubscription });
+    res.status(200).json({ subscription: updatedSubscription });
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -79,9 +79,9 @@ const deleteSubscription = async (req, res) => {
             return res.status(404).json({ message: 'Subscription not found' });
         }
 
-        return res.status(200).json({ message: 'Subscription deleted successfully' });
+        res.status(200).json({ message: 'Subscription deleted successfully' });
     } catch (err) {
-        return res.status(500).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 };
 
