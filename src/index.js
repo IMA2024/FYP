@@ -1,13 +1,12 @@
 const express = require("express");
 const app = express();
-var cors = require('cors')
+var cors = require('cors');
+const mongoose = require("mongoose");
+require('dotenv').config()
 const { signup, signin, myProfile } = require("./controllers/profiling");
 const adminRouter = require("./routes/adminRoute");
+const businessOwnerRouter = require("./routes/businessOwnerRoute");
 
-
-require('dotenv').config()
-
-const mongoose = require("mongoose");
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,7 +22,9 @@ app.use(express.json());
 app.use("/signup",signup);
 app.use("/signin",signin);
 app.use("/myProfile", myProfile);
-app.use("/admin",adminRouter);
+
+app.use("/admin", adminRouter );
+app.use("/businessOwner", businessOwnerRouter);
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB")
