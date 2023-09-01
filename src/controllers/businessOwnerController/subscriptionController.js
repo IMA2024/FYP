@@ -42,4 +42,3 @@ const makePayment = async (req, res) => {
 };
 
 module.exports = { viewSubscriptions , makePayment}
-
