@@ -3,6 +3,7 @@ const { businessOwnerAuth } = require("../middleware/auth");
 const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness } = require("../controllers/businessOwnerController/businessController");
 const { addRevenue, viewAllRevenues, deleteRevenue, addExpense, viewAllExpenses, deleteExpense } = require("../controllers/businessOwnerController/accountingController");
 const { viewSubscriptions, makePayment } = require("../controllers/businessOwnerController/subscriptionController");
+const { viewAllFAQs } = require("../controllers/businessOwnerController/faqController");
 const businessOwnerRouter = express.Router();
 
 // For Business
@@ -28,5 +29,9 @@ businessOwnerRouter.delete('/deleteExpense', deleteExpense);
 
 businessOwnerRouter.get('/viewSubscriptions', viewSubscriptions);
 businessOwnerRouter.post('/makePayment', makePayment);
+
+// For FAQ
+
+businessOwnerRouter.get('/viewAllFAQs', viewAllFAQs);
 
 module.exports = businessOwnerRouter;
