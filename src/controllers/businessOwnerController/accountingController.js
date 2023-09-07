@@ -26,6 +26,7 @@ const addRevenue = async (req, res) => {
 const viewAllRevenues = async (req, res) => {
     try {
         const revenues = await revenueModel.find( businessId ).populate('business');
+        console.log(revenues);
         return res.status(200).json({ revenues: revenues });
     } catch (err) {
         return res.status(500).json({ message: err.message });
