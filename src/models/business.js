@@ -36,6 +36,10 @@ const businessSchema = mongoose.Schema({
    status:{
     type: String,
     default: 'Active'
+   }, 
+   subscribed:{
+    type: String,
+    default: 'Unsubscribed'
    }
 }, { timestamps: true });
 
