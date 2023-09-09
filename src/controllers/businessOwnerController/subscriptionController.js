@@ -16,9 +16,9 @@ const viewSubscriptions = async (req, res) => {
 };
 
 const makePayment = async (req, res) => {
-  const { subscribed } = req.body;
-  console.log(subscribed);
-  // console.log(userId);
+  const { businessId , subscribed } = req.body;
+  // console.log(subscribed);
+  // console.log(businessId);
 
   try {
     const lineItems = [
@@ -39,17 +39,18 @@ const makePayment = async (req, res) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "http://127.0.0.1:5173/PaymentSuccess",
-      cancel_url: "http://127.0.0.1:5173/PaymentUnsuccessful",
+      success_url: "http://127.0.0.1:5173/BusinessPanelDashboard",
+      cancel_url: "http://127.0.0.1:5173/BuySubscription",
     });
 
     // Assuming the Stripe payment is successful and you receive the session ID,
     // create a payment record in your database using your paymentModel
     const paymentRecord = {
-      // businessOwner: userId,
+      business: businessId,
       transactionId: session.id,
       amount: subscribed.price,
       date: subscribed.createdAt,
+      title:subscribed.title
     };
 
     // Insert paymentRecord into your paymentModel in the database
@@ -61,5 +62,7 @@ const makePayment = async (req, res) => {
     return res.status(500).json({ message: "Error making payment" });
   }
 };
+
+
 
 module.exports = { viewSubscriptions, makePayment };

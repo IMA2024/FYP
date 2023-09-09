@@ -2,11 +2,11 @@ const express = require("express");
 const { addUser, viewAllUsers, deleteUser, updateUser} = require("../controllers/adminController/userController");
 const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness, businessesList } = require("../controllers/adminController/businessController");
 const { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription } = require("../controllers/adminController/subscriptionController");
-const { adminAuth } = require("../middleware/auth");
 const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense, totalExpense, totalProfit } = require("../controllers/adminController/accountingController");
 const { businessOwnersList } = require("../controllers/adminController/businessOwnersList");
 const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue, totalCustomers, totalSubscriptions } = require("../controllers/adminController/dashboardController");
 const { addFAQ, viewAllFAQs, updateFAQ, deleteFAQ } = require("../controllers/adminController/faqController");
+const { viewAllPayments , deletePayment } = require("../controllers/adminController/paymentController");
 const adminRouter = express.Router();
 
 // For Dashboard
@@ -59,12 +59,16 @@ adminRouter.post('/addExpense', addExpense);
 adminRouter.get('/viewAllExpenses', viewAllExpenses);
 adminRouter.delete('/deleteExpense', deleteExpense);
 
-// For Payments 
+// For Accounting in Dashboard
 
 adminRouter.get('/totalRevenue', totalRevenue);
 adminRouter.get('/totalExpense', totalExpense);
 adminRouter.get('/totalProfit', totalProfit);
 
+// For Payments
+
+adminRouter.get('/viewAllPayments', viewAllPayments);
+adminRouter.delete('/deletePayment', deletePayment);
 
 // For FAQs
 

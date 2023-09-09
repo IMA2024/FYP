@@ -3,13 +3,12 @@ const mongoose = require("mongoose");
 const paymentSchema = mongoose.Schema({
     title: {
         type: String,
-        default: 'Subscription'
     },  
-    // businessOwner: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'user',
-    //     required: true
-    // },
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business',
+        required: true
+    },
     date: {
         type: Date,
         required: true,
