@@ -8,9 +8,11 @@ const agentSchema = mongoose.Schema({
     },
     name: {
         type: String,
+        required: true
     },
     voice: {
         type: String,
+        required: true
     },
 }, { timestamps: true });
 

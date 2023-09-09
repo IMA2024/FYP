@@ -29,7 +29,7 @@ const addAgent = async (req, res) => {
 const viewAllAgents = async (req, res) => {
   try {
     const agents = await agentModel.find().populate('business');
-    return res.status(200).json({ agents: agents });
+    return res.status(200).json({ agents });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -42,14 +42,13 @@ const deleteAgent = async (req, res) => {
 
   try {
     const deletedAgent = await agentModel.findByIdAndDelete(agentId);
-
     if (!deletedAgent) {
-      return res.status(404).json({ error: 'Agent not found.' });
+      return res.status(404).json({ message: 'Agent not found' });
     }
-
-    return res.status(200).json({ message: 'Agent Deleted Successfully.' });
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(200).json({ message: 'Agent Deleted Successfully' });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 

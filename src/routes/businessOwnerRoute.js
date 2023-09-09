@@ -5,6 +5,7 @@ const { addRevenue, viewAllRevenues, deleteRevenue, addExpense, viewAllExpenses,
 const { viewSubscriptions, makePayment } = require("../controllers/businessOwnerController/subscriptionController");
 const { viewAllFAQs } = require("../controllers/businessOwnerController/faqController");
 const { addAgent, viewAllAgents, deleteAgent } = require("../controllers/businessOwnerController/agentController");
+const { viewAllPayments, deletePayment } = require("../controllers/businessOwnerController/paymentController");
 const businessOwnerRouter = express.Router();
 
 // For Business
@@ -36,6 +37,11 @@ businessOwnerRouter.delete('/deleteExpense', deleteExpense);
 
 businessOwnerRouter.get('/viewSubscriptions', viewSubscriptions);
 businessOwnerRouter.post('/makePayment', makePayment);
+
+// For Payments
+
+businessOwnerRouter.get('/viewAllPayments', viewAllPayments);
+businessOwnerRouter.delete('/deletePayment', deletePayment);
 
 // For FAQ
 
