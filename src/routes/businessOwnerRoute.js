@@ -2,7 +2,7 @@ const express = require("express");
 const { businessOwnerAuth } = require("../middleware/auth");
 const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness } = require("../controllers/businessOwnerController/businessController");
 const { addRevenue, viewAllRevenues, deleteRevenue, addExpense, viewAllExpenses, deleteExpense } = require("../controllers/businessOwnerController/accountingController");
-const { viewSubscriptions, makePayment } = require("../controllers/businessOwnerController/subscriptionController");
+const { viewSubscriptions, makePayment, viewSubscriptionRecord, deleteSubscriptionRecord } = require("../controllers/businessOwnerController/subscriptionController");
 const { viewAllFAQs } = require("../controllers/businessOwnerController/faqController");
 const { addAgent, viewAllAgents, deleteAgent } = require("../controllers/businessOwnerController/agentController");
 const { viewAllPayments, deletePayment } = require("../controllers/businessOwnerController/paymentController");
@@ -37,6 +37,11 @@ businessOwnerRouter.delete('/deleteExpense', deleteExpense);
 
 businessOwnerRouter.get('/viewSubscriptions', viewSubscriptions);
 businessOwnerRouter.post('/makePayment', makePayment);
+
+// For Subscription Records
+
+businessOwnerRouter.get('/viewSubscriptionRecord', viewSubscriptionRecord);
+businessOwnerRouter.delete('/deleteSubscriptionRecord', deleteSubscriptionRecord);
 
 // For Payments
 
