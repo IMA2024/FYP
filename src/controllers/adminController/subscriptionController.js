@@ -1,4 +1,5 @@
 const subscriptionModel = require("../../models/subscription");
+const subscriptionRecordModel = require("../../models/subscriptionRecord");
 const { json } = require("express");
 require("dotenv").config();
 
@@ -85,5 +86,40 @@ const deleteSubscription = async (req, res) => {
     }
 };
 
+// View All Subscription Record
 
-module.exports = { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription }
+const viewSubscriptionRecord = async (req, res) => {
+  try {
+      const subscriptionsRecord = await subscriptionRecordModel.find()
+      .populate({
+        path: 'business',
+        populate: {
+          path: 'businessOwner',
+          model: 'user' 
+        }
+      });
+      res.status(200).json({subscriptionsRecord : subscriptionsRecord});
+  } catch (err) {
+      res.status(500).json({ message: err.message });
+  }
+};
+
+// Delete Subscription Record
+
+const deleteSubscriptionRecord = async (req, res) => {
+  const {subscriptionId} = req.query;
+
+  try {
+      const subscription = await subscriptionRecordModel.findByIdAndDelete(subscriptionId);
+
+      if (!subscription) {
+          return res.status(404).json({ message: 'Subscription not found' });
+      }
+
+      res.status(200).json({ message: 'Subscription Deleted Successfully' });
+  } catch (err) {
+      res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription, viewSubscriptionRecord , deleteSubscriptionRecord}

@@ -1,7 +1,7 @@
 const express = require("express");
 const { addUser, viewAllUsers, deleteUser, updateUser} = require("../controllers/adminController/userController");
 const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness, businessesList } = require("../controllers/adminController/businessController");
-const { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription } = require("../controllers/adminController/subscriptionController");
+const { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription, viewSubscriptionRecord, deleteSubscriptionRecord } = require("../controllers/adminController/subscriptionController");
 const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense, totalExpense, totalProfit } = require("../controllers/adminController/accountingController");
 const { businessOwnersList } = require("../controllers/adminController/businessOwnersList");
 const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue, totalCustomers, totalSubscriptions } = require("../controllers/adminController/dashboardController");
@@ -44,6 +44,11 @@ adminRouter.post('/addNewSubscription',addNewSubscription);
 adminRouter.get('/viewSubscriptions',viewSubscriptions);
 adminRouter.put('/updateSubscription', updateSubscription);
 adminRouter.delete('/deleteSubscription', deleteSubscription);
+
+// For Subscription Records
+
+adminRouter.get('/viewSubscriptionRecord',viewSubscriptionRecord);
+adminRouter.delete('/deleteSubscriptionRecord', deleteSubscriptionRecord);
 
 // For Accounting
 
