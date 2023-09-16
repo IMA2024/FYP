@@ -9,7 +9,7 @@ const questionnaireSchema = mongoose.Schema({
     },
     questionnaire: [{
         question: String,
-        answer: [String]
+        options: [String]
     }]
 }, { timestamps: true });
 

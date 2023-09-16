@@ -3,10 +3,10 @@ const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
 const addQuestionnaire = async (req, res) => {
-    const { businessId , questionnaire } = req.body;
+    const { business , questionnaire } = req.body;
   
     try {
-      const newQuestionnaire = await questionnaireModel.create({ businessId, questionnaire });
+      const newQuestionnaire = await questionnaireModel.create({ business, questionnaire });
       return res.status(201).json({ message: 'Questionnaire Added Successfully', questionnaire: newQuestionnaire });
     } catch (error) {
       console.error(error);
