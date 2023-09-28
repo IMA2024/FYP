@@ -40,6 +40,9 @@ const businessSchema = mongoose.Schema({
    subscribed:{
     type: String,
     default: 'Unsubscribed'
+   },
+   subscriptionExpiry:{
+    type: Date
    }
 }, { timestamps: true });
 
