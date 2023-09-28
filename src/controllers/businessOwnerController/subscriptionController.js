@@ -1,6 +1,7 @@
 const subscriptionModel = require("../../models/subscription");
 const subscriptionRecordModel = require("../../models/subscriptionRecord");
-const paymentModel = require("../../models/payment"); // Import your paymentModel here
+const paymentModel = require("../../models/payment");
+const businessModel = require("../../models/business");
 require("dotenv").config();
 const stripe = require("stripe")("sk_test_51Nl5XoExU3kznyi3EOVlYlppCVmnZhblFhIyPXkgid8KBCtRQ0qRr2M33YRRd4l4RopQJwbQMWtfPDpQK8xgxlcH00C80vOtc3");
 
@@ -16,7 +17,7 @@ const viewSubscriptions = async (req, res) => {
 };
 
 const makePayment = async (req, res) => {
-  const { businessId , subscribed } = req.body;
+  const { businessId, subscribed } = req.body;
 
   try {
     const lineItems = [
@@ -30,7 +31,7 @@ const makePayment = async (req, res) => {
           unit_amount: subscribed.price * 100,
         },
         quantity: 1,
-      }
+      },
     ];
 
     const session = await stripe.checkout.sessions.create({
@@ -47,13 +48,13 @@ const makePayment = async (req, res) => {
       transactionId: session.id,
       amount: subscribed.price,
       date: subscribed.createdAt,
-      title: subscribed.title
+      title: subscribed.title,
     };
 
     // Insert paymentRecord into your paymentModel in the database
     const createdPayment = await paymentModel.create(paymentRecord);
     console.log(createdPayment);
-    
+
     // Create a subscription record
     const subscriptionRecord = {
       business: businessId,
@@ -64,15 +65,47 @@ const makePayment = async (req, res) => {
       type: subscribed.type,
     };
 
-    const createdSubscriptionRecord = await subscriptionRecordModel.create(subscriptionRecord);
+    const createdSubscriptionRecord = await subscriptionRecordModel.create(
+      subscriptionRecord
+    );
     console.log(createdSubscriptionRecord);
-    
+
+    // // Calculate the expiration date based on the 'type' attribute
+    // const currentDate = new Date(subscribed.createdAt);
+    // let expirationDate;
+
+    // if (subscribed.type === "Weekly") {
+    //   expirationDate = new Date(currentDate);
+    //   expirationDate.setDate(currentDate.getDate() + 7);
+    // } else if (subscribed.type === "Monthly") {
+    //   expirationDate = new Date(currentDate);
+    //   expirationDate.setMonth(currentDate.getMonth() + 1);
+    // } else if (subscribed.type === "Yearly") {
+    //   expirationDate = new Date(currentDate);
+    //   expirationDate.setFullYear(currentDate.getFullYear() + 1);
+    // }
+
+    // const updatedBusiness = await businessModel.findByIdAndUpdate(
+    //   businessId,
+    //   {
+    //     subscribed: "Subscribed",
+    //     subscriptionExpiry: expirationDate, // Update 'subscriptionExpiry' attribute
+    //   },
+    //   { new: true }
+    // );
+    // console.log(updatedBusiness);
+
+    // if (!updatedBusiness) {
+    //   return res.status(404).json({ message: "Business not found" });
+    // }
+
     return res.json({ id: session.id });
   } catch (error) {
     console.error("Error making payment:", error);
     return res.status(500).json({ message: "Error making payment" });
   }
 };
+
 
 // View All Subscription Record
 

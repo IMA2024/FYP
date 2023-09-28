@@ -3,21 +3,35 @@ const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
 const addQuestionnaire = async (req, res) => {
-    const { business , questionnaire } = req.body;
-  
-    try {
-      const newQuestionnaire = await questionnaireModel.create({ business, questionnaire });
-      return res.status(201).json({ message: 'Questionnaire Added Successfully', questionnaire: newQuestionnaire });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Something went wrong.' });
+  const { business, questionnaire } = req.body;
+
+  try {
+    // Check if a questionnaire already exists for the given business
+    const existingQuestionnaire = await questionnaireModel.findOne({ business });
+
+    if (existingQuestionnaire) {
+      return res.status(400).json({ message: 'Questionnaire Already Exists For This Business.' });
     }
-  };
+
+    const newQuestionnaire = await questionnaireModel.create({ business, questionnaire });
+    return res.status(201).json({ message: 'Questionnaire Added Successfully', questionnaire: newQuestionnaire });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
   
 
 const viewAllQuestionnaires = async (req, res) => {
     try {
-      const questionnaires = await questionnaireModel.find().populate('business');
+      const questionnaires = await questionnaireModel.find().populate({
+        path: 'business',
+        populate: {
+          path: 'businessOwner',
+          model: 'user' 
+        }
+      });
       return res.status(200).json({ questionnaires: questionnaires });
     } catch (error) {
       console.error(error);
