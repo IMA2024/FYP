@@ -6,6 +6,7 @@ require('dotenv').config()
 const { signup, signin, myProfile } = require("./controllers/profiling");
 const adminRouter = require("./routes/adminRoute");
 const businessOwnerRouter = require("./routes/businessOwnerRoute");
+const marketingAgentRouter = require("./routes/marketingAgentRoute");
 
 
 app.use((req, res, next) => {
@@ -25,6 +26,7 @@ app.use("/myProfile", myProfile);
 
 app.use("/admin", adminRouter );
 app.use("/businessOwner", businessOwnerRouter);
+app.use("/marketingAgent", marketingAgentRouter);
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB")
