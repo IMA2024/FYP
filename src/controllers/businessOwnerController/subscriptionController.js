@@ -9,10 +9,10 @@ const stripe = require("stripe")("sk_test_51Nl5XoExU3kznyi3EOVlYlppCVmnZhblFhIyP
 
 const viewSubscriptions = async (req, res) => {
   try {
-      const subscriptions = await subscriptionModel.find();
-      return res.status(200).json({subscriptions : subscriptions});
+    const subscriptions = await subscriptionModel.find();
+    return res.status(200).json({ subscriptions: subscriptions });
   } catch (err) {
-      return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -74,7 +74,7 @@ const makePayment = async (req, res) => {
     const currentDate = new Date(subscribed?.createdAt);
     let expirationDate;
 
-    if (subscribed.type === "Weekly") {
+    if (subscribed?.type === "Weekly") {
       expirationDate = new Date(currentDate);
       expirationDate.setDate(currentDate.getDate() + 7);
     } else if (subscribed.type === "Monthly") {
@@ -98,7 +98,14 @@ const makePayment = async (req, res) => {
     if (!updatedBusiness) {
       return res.status(404).json({ message: "Business not found" });
     }
-
+    const currentDateNow = new Date();
+    if (updatedBusiness.subscriptionExpiry && updatedBusiness.subscriptionExpiry <= currentDateNow) {
+      const expiredBusiness = await businessModel.findByIdAndUpdate(
+        businessId,
+        { subscribed: "Unsubscribe" },
+        { new: true }
+      );
+    }
     return res.json({ id: session.id });
   } catch (error) {
     console.error("Error making payment:", error);
@@ -111,29 +118,29 @@ const makePayment = async (req, res) => {
 
 const viewSubscriptionRecord = async (req, res) => {
   try {
-      const subscriptions = await subscriptionRecordModel.find().populate('business');
-      res.status(200).json({subscriptions : subscriptions});
+    const subscriptions = await subscriptionRecordModel.find().populate('business');
+    res.status(200).json({ subscriptions: subscriptions });
   } catch (err) {
-      res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
 // Delete Subscription
 
 const deleteSubscriptionRecord = async (req, res) => {
-    const {subscriptionId} = req.query;
+  const { subscriptionId } = req.query;
 
-    try {
-        const subscription = await subscriptionRecordModel.findByIdAndDelete(subscriptionId);
+  try {
+    const subscription = await subscriptionRecordModel.findByIdAndDelete(subscriptionId);
 
-        if (!subscription) {
-            return res.status(404).json({ message: 'Subscription not found' });
-        }
-
-        res.status(200).json({ message: 'Subscription Deleted Successfully' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+    if (!subscription) {
+      return res.status(404).json({ message: 'Subscription not found' });
     }
+
+    res.status(200).json({ message: 'Subscription Deleted Successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
-module.exports = { viewSubscriptions, makePayment , viewSubscriptionRecord , deleteSubscriptionRecord};
+module.exports = { viewSubscriptions, makePayment, viewSubscriptionRecord, deleteSubscriptionRecord };

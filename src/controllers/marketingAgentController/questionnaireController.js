@@ -5,7 +5,6 @@ const addQuestionnaire = async (req, res) => {
   const { business, questionnaire } = req.body;
 
   try {
-    // Check if a questionnaire already exists for the given business
     const existingQuestionnaire = await questionnaireModel.findOne({ business });
 
     if (existingQuestionnaire) {
