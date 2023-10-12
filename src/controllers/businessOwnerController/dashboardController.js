@@ -1,47 +1,9 @@
-const userModel = require("../../models/user");
 const revenueModel = require("../../models/revenue");
 const expenseModel = require("../../models/expense");
 const businessModel = require("../../models/business");
 const subscriptionRecordModel = require("../../models/subscriptionRecord");
 const paymentModel = require("../../models/payment");
 
-// TotalRevenueBlocks === Number of Users
-
-const totalUsers = async (req, res) => {
-    try {
-        const totalUsers = await userModel.countDocuments();
-        return res.status(200).json(totalUsers);
-    } catch (err) {
-        return res.status(500).json({ message: 'Error getting total users', error: err.message });
-    }
-};
-
-const totalMarketingAgents = async (req, res) => {
-    try {
-        const totalMarketingAgents = await userModel.countDocuments({ role: 'Marketing Agent' });
-        return res.status(200).json(totalMarketingAgents);
-    } catch (err) {
-        return res.status(500).json({ message: 'Error getting total marketing agents', error: err.message });
-    }
-};
-
-const totalBusinessOwners = async (req, res) => {
-    try {
-        const totalMarketingAgents = await userModel.countDocuments({ role: 'Business Owner' });
-        return res.status(200).json(totalMarketingAgents);
-    } catch (err) {
-        return res.status(500).json({ message: 'Error getting total marketing agents', error: err.message });
-    }
-};
-
-const totalCustomers = async (req, res) => {
-    try {
-        const totalCustomers = await userModel.countDocuments({ role: 'Customer' });
-        return res.status(200).json(totalCustomers);
-    } catch (err) {
-        return res.status(500).json({ message: 'Error getting total marketing agents', error: err.message });
-    }
-};
 
 // Grouped Stats === Total Businesses, Subscribed Businesses, Unsubscribed Businesses
 
@@ -53,7 +15,6 @@ const totalBusinesses = async (req, res) => {
         return res.status(500).json({ message: 'Error getting total businesses', error: err.message });
     }
 };
-
 
 const subscribedBusinesses = async (req, res) => {
     try {
@@ -151,4 +112,4 @@ const totalRevenue = async (req, res) => {
     }
   };
 
-module.exports = { totalUsers , totalMarketingAgents , totalBusinessOwners , totalCustomers , totalBusinesses , subscribedBusinesses, unsubscribedBusinesses, totalSubscriptions , totalRevenue , totalExpense, totalProfit, totalPayments};
+module.exports = { totalBusinesses , subscribedBusinesses, unsubscribedBusinesses, totalSubscriptions , totalRevenue , totalExpense, totalProfit, totalPayments};

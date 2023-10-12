@@ -7,7 +7,20 @@ const { viewAllFAQs } = require("../controllers/businessOwnerController/faqContr
 const { addAgent, viewAllAgents, deleteAgent } = require("../controllers/businessOwnerController/agentController");
 const { viewAllPayments, deletePayment } = require("../controllers/businessOwnerController/paymentController");
 const { addQuestionnaire, viewAllQuestionnaires, updateQuestionnaire, deleteQuestionnaire } = require("../controllers/businessOwnerController/questionnaireController");
+const { totalBusinesses, subscribedBusinesses, unsubscribedBusinesses, totalSubscriptions, totalRevenue, totalExpense, totalProfit, totalPayments } = require("../controllers/businessOwnerController/dashboardController");
 const businessOwnerRouter = express.Router();
+
+// For Dashboard
+
+businessOwnerRouter.get('/totalBusinesses', totalBusinesses);
+businessOwnerRouter.get('/subscribedBusinesses', subscribedBusinesses);
+businessOwnerRouter.get('/unsubscribedBusinesses', unsubscribedBusinesses);
+
+businessOwnerRouter.get('/totalSubscriptions', totalSubscriptions);
+businessOwnerRouter.get('/totalRevenue', totalRevenue);
+businessOwnerRouter.get('/totalExpense', totalExpense);
+businessOwnerRouter.get('/totalProfit', totalProfit);
+businessOwnerRouter.get('/totalPayments', totalPayments);
 
 // For Business
 
