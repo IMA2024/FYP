@@ -102,7 +102,7 @@ const makePayment = async (req, res) => {
     if (updatedBusiness.subscriptionExpiry && updatedBusiness.subscriptionExpiry <= currentDateNow) {
       const expiredBusiness = await businessModel.findByIdAndUpdate(
         businessId,
-        { subscribed: "Unsubscribe" },
+        { subscribed: "Unsubscribed" },
         { new: true }
       );
     }

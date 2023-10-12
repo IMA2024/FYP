@@ -2,9 +2,9 @@ const express = require("express");
 const { addUser, viewAllUsers, deleteUser, updateUser} = require("../controllers/adminController/userController");
 const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness, businessesList } = require("../controllers/adminController/businessController");
 const { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription, viewSubscriptionRecord, deleteSubscriptionRecord } = require("../controllers/adminController/subscriptionController");
-const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense, totalExpense, totalProfit } = require("../controllers/adminController/accountingController");
+const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense } = require("../controllers/adminController/accountingController");
 const { businessOwnersList } = require("../controllers/adminController/businessOwnersList");
-const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue, totalCustomers, totalSubscriptions } = require("../controllers/adminController/dashboardController");
+const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue, totalCustomers, totalSubscriptions, subscribedBusinesses, unsubscribedBusinesses, totalPayments ,  totalExpense, totalProfit } = require("../controllers/adminController/dashboardController");
 const { addFAQ, viewAllFAQs, updateFAQ, deleteFAQ } = require("../controllers/adminController/faqController");
 const { viewAllPayments , deletePayment } = require("../controllers/adminController/paymentController");
 const adminRouter = express.Router();
@@ -15,9 +15,15 @@ adminRouter.get('/totalMarketingAgents', totalMarketingAgents);
 adminRouter.get('/totalBusinessOwners', totalBusinessOwners);
 adminRouter.get('/totalCustomers', totalCustomers);
 
-adminRouter.get('/totalSubscriptions', totalSubscriptions);
 adminRouter.get('/totalBusinesses', totalBusinesses);
+adminRouter.get('/subscribedBusinesses', subscribedBusinesses);
+adminRouter.get('/unsubscribedBusinesses', unsubscribedBusinesses);
 
+adminRouter.get('/totalSubscriptions', totalSubscriptions);
+adminRouter.get('/totalRevenue', totalRevenue);
+adminRouter.get('/totalExpense', totalExpense);
+adminRouter.get('/totalProfit', totalProfit);
+adminRouter.get('/totalPayments', totalPayments);
 
 // For Users
 
