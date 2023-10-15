@@ -18,24 +18,47 @@ const addQuestionnaire = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
-
   
-
-const viewAllQuestionnaires = async (req, res) => {
+  const viewAllQuestionnaires = async (req, res) => {
     try {
-      const questionnaires = await questionnaireModel.find().populate({
-        path: 'business',
-        populate: {
-          path: 'businessOwner',
-          model: 'user' 
+      const questionnaires = await questionnaireModel.aggregate([
+        
+        {
+          $lookup: {
+            from: 'businesses',
+            localField: 'business',
+            foreignField: '_id',
+            as: 'business'
+          }
+        },
+        {
+          $unwind: '$business'
+        },
+        {
+          $match: {
+            "business.subscribed": 'Subscribed'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users', // Replace with the actual name of the users collection
+            localField: 'business.businessOwner',
+            foreignField: '_id',
+            as: 'business.businessOwner'
+          }
+        },
+        {
+          $unwind: '$business.businessOwner'
         }
-      });
+      ]);
+  
       return res.status(200).json({ questionnaires: questionnaires });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Something went wrong.' });
     }
   };
+  
 
 const updateQuestionnaire = async (req, res) => {
     const { questionnaireId, businessId , questionnaire } = req.body;

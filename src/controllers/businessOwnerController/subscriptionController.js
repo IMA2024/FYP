@@ -2,6 +2,7 @@ const subscriptionModel = require("../../models/subscription");
 const subscriptionRecordModel = require("../../models/subscriptionRecord");
 const paymentModel = require("../../models/payment");
 const businessModel = require("../../models/business");
+const expenseModel = require("../../models/expense");
 require("dotenv").config();
 const stripe = require("stripe")("sk_test_51Nl5XoExU3kznyi3EOVlYlppCVmnZhblFhIyPXkgid8KBCtRQ0qRr2M33YRRd4l4RopQJwbQMWtfPDpQK8xgxlcH00C80vOtc3");
 
@@ -54,6 +55,9 @@ const makePayment = async (req, res) => {
     // Insert paymentRecord into your paymentModel in the database
     const createdPayment = await paymentModel.create(paymentRecord);
     console.log(createdPayment);
+
+    const createdExpense = await expenseModel.create(paymentRecord);
+    console.log(createdExpense);
 
     // Create a subscription record
     const subscriptionRecord = {
