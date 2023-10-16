@@ -43,7 +43,7 @@ def Originate_Call(AMI, Source_Channel, Destination_Extension):
             'Exten': Destination_Extension,
             'Priority': 1,
             'CallerId': 'IMA <080050500>',
-            'Timeout': 5000
+            'Timeout': 50000
         }
         response = AMI.send_action(action)
         print(response)
