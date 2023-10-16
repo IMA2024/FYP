@@ -43,6 +43,71 @@ const totalCustomers = async (req, res) => {
     }
 };
 
+// User Registered Graphs
+
+// const getMonthlyUserCountsForLastYear = async (req, res, next) => {
+
+//   const currentDate = new Date();
+//   const lastYearStartDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
+
+//   const userCounts = await userModel.aggregate([
+//     {
+//       $match: {
+//         createdAt: {
+//           $gte: lastYearStartDate,
+//           $lte: currentDate,
+//         },
+//       },
+//     },
+//     {
+//       $project: {
+//         month: { $month: '$createdAt' },
+//         year: { $year: '$createdAt' },
+//       },
+//     },
+//     {
+//       $group: {
+//         _id: {
+//           month: '$month',
+//           year: '$year',
+//         },
+//         count: { $sum: 1 },
+//       },
+//     },
+//     {
+//       $sort: { '_id.year': 1, '_id.month': 1 },
+//     },
+//   ]);
+//   let monthly = convertMonthlyCountsToArrays(userCounts);
+//   console.log(monthly);
+//   return res.send({monthly}) ;
+// };
+
+// //To Get Array of Above Users Count
+// function convertMonthlyCountsToArrays(counts) {
+//   const monthYearArray = [];
+//   const countArray = [];
+
+//   counts.forEach(item => {
+//     const { month, year } = item._id;
+//     monthYearArray.push(`${getMonthName(month)} ${year}`);
+//     countArray.push(item.count);
+//   });
+
+//   return { monthYearArray, countArray };
+  
+// }
+
+// function getMonthName(month) {
+// const monthNames = [
+//   'January', 'February', 'March', 'April', 'May', 'June',
+//   'July', 'August', 'September', 'October', 'November', 'December'
+// ];
+// return monthNames[month - 1];
+// }
+
+
+
 // Grouped Stats === Total Businesses, Subscribed Businesses, Unsubscribed Businesses
 
 const totalBusinesses = async (req, res) => {
@@ -151,4 +216,4 @@ const totalRevenue = async (req, res) => {
     }
   };
 
-module.exports = { totalUsers , totalMarketingAgents , totalBusinessOwners , totalCustomers , totalBusinesses , subscribedBusinesses, unsubscribedBusinesses, totalSubscriptions , totalRevenue , totalExpense, totalProfit, totalPayments};
+module.exports = { totalUsers , totalMarketingAgents , totalBusinessOwners , totalCustomers ,totalBusinesses , subscribedBusinesses, unsubscribedBusinesses, totalSubscriptions , totalRevenue , totalExpense, totalProfit, totalPayments};
