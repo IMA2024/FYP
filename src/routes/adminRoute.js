@@ -4,7 +4,7 @@ const { addBusiness, viewAllBusinesses, updateBusiness, deleteBusiness, business
 const { addNewSubscription, viewSubscriptions, updateSubscription, deleteSubscription, viewSubscriptionRecord, deleteSubscriptionRecord } = require("../controllers/adminController/subscriptionController");
 const { addRevenue, viewAllRevenues, addExpense, viewAllExpenses, deleteRevenue, deleteExpense } = require("../controllers/adminController/accountingController");
 const { businessOwnersList } = require("../controllers/adminController/businessOwnersList");
-const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue, totalCustomers, totalSubscriptions, subscribedBusinesses, unsubscribedBusinesses, totalPayments ,  totalExpense, totalProfit } = require("../controllers/adminController/dashboardController");
+const { totalUsers, totalMarketingAgents, totalBusinessOwners, totalBusinesses, totalRevenue, totalCustomers, totalSubscriptions, subscribedBusinesses, unsubscribedBusinesses, totalPayments ,  totalExpense, totalProfit } = require("../controllers/adminController/reportsController");
 const { addFAQ, viewAllFAQs, updateFAQ, deleteFAQ } = require("../controllers/adminController/faqController");
 const { viewAllPayments , deletePayment } = require("../controllers/adminController/paymentController");
 const adminRouter = express.Router();
