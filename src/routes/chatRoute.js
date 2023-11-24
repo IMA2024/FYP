@@ -1,8 +1,8 @@
-const express = require("express");
-const { fetchChats, accessChat } = require("../controllers/chatcontroller");
-const chatRouter = express.Router(); 
+// const express = require("express");
+// const { fetchChats, accessChat } = require("../controllers/chatcontroller");
+// const chatRouter = express.Router(); 
 
-chatRouter.post("/", accessChat);
-chatRouter.get("/", fetchChats);
+// chatRouter.post("/", accessChat);
+// chatRouter.get("/", fetchChats);
 
-module.exports = chatRouter;
+// module.exports = chatRouter;
