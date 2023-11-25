@@ -34,7 +34,7 @@ app.use("/marketingAgent", marketingAgentRouter);
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB")
 }).then(() => {
-    app.listen(80, () => {
+    app.listen(8080, () => {
         console.log("Server is running.")
     })
 })
