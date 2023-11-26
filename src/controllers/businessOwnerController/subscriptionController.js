@@ -39,8 +39,8 @@ const makePayment = async (req, res) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "http://127.0.0.1:5173/BusinessPanelDashboard",
-      cancel_url: "http://127.0.0.1:5173/BuySubscription",
+      success_url: "https://imaa-2585bbde653a.herokuapp.com/BusinessPanelDashboard",
+      cancel_url: "https://imaa-2585bbde653a.herokuapp.com/BuySubscription",
     });
 
     // create a payment record in your database using your paymentModel
