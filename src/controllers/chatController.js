@@ -83,7 +83,7 @@ async function getContactsHistory(req, res, next){
         }
       ]);
     
-    return contactsHistory;
+    return res.status(200).send({contactsHistory});
 }
 
 async function getChat(req, res, next){
@@ -188,7 +188,8 @@ async function getChat(req, res, next){
         }
         ]);
       
-      return chat;
+        
+    return res.status(200).send({chat});
 }
 
 module.exports = { getContactsHistory, getChat  }
