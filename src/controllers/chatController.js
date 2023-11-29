@@ -2,6 +2,8 @@ const Message = require('../models/message');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 async function getContactsHistory(req, res, next){
+
+    console.log('Contacts History --- LOADED');
     let {id} = req.body;
 
     let contactsHistory = Message.aggregate([
