@@ -6,7 +6,7 @@ async function getContactsHistory(req, res, next){
     console.log('Contacts History --- LOADED');
     let {id} = req.body;
 
-    let contactsHistory = Message.aggregate([
+    let contactsHistory = await Message.aggregate([
         {
           $match: {
             $or: [
@@ -91,7 +91,7 @@ async function getChat(req, res, next){
     let {id} = req.body;
     let secUserId = req.params.userId;
 
-    let chat = Message.aggregate([
+    let chat = await Message.aggregate([
         {
           $match: {
             $or: [
