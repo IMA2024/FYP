@@ -38,7 +38,7 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 }).then(() => {
     const server = http.createServer(app);
     chatSocket(server);
-    server.listen(8080, () => {
+    server.listen(process.env.PORT || 8080, () => {
         console.log('listening on *:8080');
       });
     
