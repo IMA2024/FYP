@@ -3,7 +3,12 @@ const socketIO = require('socket.io');
 let Message = require('../models/message');
 
 function chatSocket(server) {
-  const io = socketIO(server);
+  const io = socketIO(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  });
 
   io.use((socket, next) => {
     let userId = socket.handshake.auth.id;
