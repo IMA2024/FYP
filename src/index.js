@@ -7,7 +7,8 @@ const { signup, signin, myProfile } = require("./controllers/profiling");
 const adminRouter = require("./routes/adminRoute");
 const businessOwnerRouter = require("./routes/businessOwnerRoute");
 const marketingAgentRouter = require("./routes/marketingAgentRoute");
-// const chatRouter = require("./routes/chatRoute");
+const chatSocket = require('./sockets/chatSocket.js')
+const chatRouter = require("./routes/chatRoute");
 
 
 app.use((req, res, next) => {
@@ -28,13 +29,13 @@ app.use("/myProfile", myProfile);
 app.use("/admin", adminRouter );
 app.use("/businessOwner", businessOwnerRouter);
 app.use("/marketingAgent", marketingAgentRouter);
-
-// app.use("/chat", chatRouter);
+app.use("/chat", chatRouter);
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB")
 }).then(() => {
-    app.listen(process.env.PORT || 8080, () => {
+    app.listen(process.env.PORT || 8080, (server) => {
+        chatSocket(server)
         console.log("Server is running.")
     })
 })
