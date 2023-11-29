@@ -1,28 +1,12 @@
 // module1Socket.js
 const socketIO = require('socket.io');
-const jwt = require("jsonwebtoken");
 let Message = require('../models/message');
 
-function getUserId(authToken){
-  let userId = null
-  try{
-    let payload = jwt.verify(authToken, process.env.SESSION_SECRET);
-    if(payload)
-      userId =  payload.id;
-  }
-  catch(error){
-    console.log(error.message);
-  }
-  return userId;
-}
-
 function chatSocket(server) {
-  console.log('Initializing Chat Socket')
   const io = socketIO(server);
 
   io.use((socket, next) => {
-    const token = socket.handshake.auth.token;
-    let userId = getUserId(token);
+    let userId = socket.handshake.auth.id;
 
     if(!userId){
       return next(new Error("invalid username"))
