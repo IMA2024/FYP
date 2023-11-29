@@ -9,7 +9,7 @@ const businessOwnerRouter = require("./routes/businessOwnerRoute");
 const marketingAgentRouter = require("./routes/marketingAgentRoute");
 const chatSocket = require('./sockets/chatSocket.js')
 const chatRouter = require("./routes/chatRoute");
-
+const http = require('http');
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,13 +31,21 @@ app.use("/businessOwner", businessOwnerRouter);
 app.use("/marketingAgent", marketingAgentRouter);
 app.use("/chat", chatRouter);
 
+
+
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB")
 }).then(() => {
-    app.listen(process.env.PORT || 8080, (server) => {
-        chatSocket(server)
-        console.log("Server is running.")
-    })
+    const server = http.createServer(app);
+    chatSocket(server);
+    server.listen(8080, () => {
+        console.log('listening on *:8080');
+      });
+    
+    // app.listen(process.env.PORT || 8080, (server) => {
+    //     chatSocket(server)
+    //     console.log("Server is running.")
+    // })
 })
     .catch((error) => {
         console.log(error);
