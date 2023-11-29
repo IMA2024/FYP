@@ -1,5 +1,5 @@
 const express = require("express");
-const { getContactsHistory, getChat } = require("../controllers/chatcontroller");
+const { getContactsHistory, getChat } = require("../controllers/chatController");
 const chatRouter = express.Router(); 
 
 chatRouter.get("/", getContactsHistory);
