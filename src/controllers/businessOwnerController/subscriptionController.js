@@ -39,8 +39,8 @@ const makePayment = async (req, res) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "https://ima-frontend-eight.vercel.app/BusinessPanelDashboard",
-      cancel_url: "https://ima-frontend-eight.vercel.app/BuySubscription",
+      success_url: "https://ima-frontend-git-main-ima2024.vercel.app/BusinessPanelDashboard",
+      cancel_url: "https://ima-frontend-git-main-ima2024.vercel.app/BuySubscription",
     });
 
     // create a payment record in your database using your paymentModel
