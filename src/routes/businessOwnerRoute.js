@@ -12,9 +12,9 @@ const businessOwnerRouter = express.Router();
 
 // For Dashboard
 
-businessOwnerRouter.get('/totalBusinesses', totalBusinesses);
-businessOwnerRouter.get('/subscribedBusinesses', subscribedBusinesses);
-businessOwnerRouter.get('/unsubscribedBusinesses', unsubscribedBusinesses);
+businessOwnerRouter.get('/totalBusinesses/:userId', totalBusinesses);
+businessOwnerRouter.get('/subscribedBusinesses/:userId', subscribedBusinesses);
+businessOwnerRouter.get('/unsubscribedBusinesses/:userId', unsubscribedBusinesses);
 
 businessOwnerRouter.get('/totalSubscriptions', totalSubscriptions);
 businessOwnerRouter.get('/totalRevenue', totalRevenue);
