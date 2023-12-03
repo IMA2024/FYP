@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { json } = require("express");
 const { generateToken } = require("../utils/tokenMiddleware");
 require("dotenv").config();
+const bcrypt = require('bcrypt'); 
 
 
 // Sign Up
@@ -162,30 +163,26 @@ const myProfile = async (req, res) => {
 
 // Change Password
 
-//   const changePassword = async (req, res) => {
-//   const { currentPassword, newPassword } = req.body;
-//   const userId = req.user.id;
+const changePassword = async (req, res) => {
+  const { userId, currentPassword, newPassword } = req.body;
 
-//   try {
-//     // Find the user in the database
-//     const user = await userModel.findById(userId);
+  try {
+    const user = await userModel.findById(userId);
 
-//     // Check if the current password matches
-//     const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password);
-//     if (!isCurrentPasswordValid) {
-//       return res.status(401).json({ error: 'Current password is incorrect' });
-//     }
+    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isCurrentPasswordValid) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+    user.password = newPassword;
 
-//     // Update the businessOwner's password
-//     businessOwner.password = hashedNewPassword;
-//     await businessOwner.save();
+    await user.save();
 
-//     res.json({ message: 'Password changed successfully', token });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'An error occurred while changing the password' });
-//   }
-// };
+    return res.json({ message: 'Password Changed Successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Something Went Wrong' });
+  }
+};
 
 
-module.exports = { signup, signin, myProfile };
+module.exports = { signup, signin, myProfile, changePassword };
